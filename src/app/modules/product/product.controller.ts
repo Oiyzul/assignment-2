@@ -40,7 +40,26 @@ const getProducts = async (req: Request, res: Response) => {
   }
 };
 
+const getSpecificProduct = async (req: Request, res: Response) => {
+  try {
+    const result = await ProductServices.getSpecificProductFromDB(req.params.productId)
+
+    res.status(200).json({
+        success: true,
+        message: 'Product fetched successfully.',
+        data: result
+    });
+  } catch (err: any) {
+    res.status(500).json({
+        success: false,
+        message: 'An error occurred while fetching the product.',
+        error: err.message
+    });
+  }
+};
+
 export const ProductControllers = {
   createProduct,
-  getProducts
+  getProducts,
+  getSpecificProduct
 };
