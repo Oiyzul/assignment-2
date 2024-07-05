@@ -10,11 +10,16 @@ const createOrder = async (req: Request, res: Response) => {
 
     const result = await OrderServices.createOrderIntoDB(validatedOrderData);
 
-    res.status(201).json({
-      success: true,
-      message: "Order created successfully.",
-      data: result,
-    });
+    result?.data != null
+      ? res.status(201).json({
+          success: result?.success,
+          message: result?.message,
+          data: result.data,
+        })
+      : res.status(500).json({
+          success: result?.success,
+          message: result?.message,
+        });
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -27,15 +32,20 @@ const createOrder = async (req: Request, res: Response) => {
 const getOrders = async (req: Request, res: Response) => {
   try {
     const email = req.query?.email;
-    const result = await OrderServices.getAllOrdersFromDB(email as string | undefined);
+    const result = await OrderServices.getAllOrdersFromDB(
+      email as string | undefined
+    );
 
-    res.status(200).json({
-      success: true,
-      message: email
-        ? `Orders fetched successfully for user email.`
-        : "Orders fetched successfully.",
-      data: result,
-    });
+    result?.data != null
+      ? res.status(200).json({
+          success: result?.success,
+          message: result?.message,
+          data: result.data,
+        })
+      : res.status(500).json({
+          success: result?.success,
+          message: result?.message,
+        });
   } catch (err: any) {
     res.status(500).json({
       success: false,

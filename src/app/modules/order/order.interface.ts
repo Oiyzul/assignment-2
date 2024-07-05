@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export type TOrder = {
   email: string;
-  productId: mongoose.ObjectId;
+  productId: mongoose.Types.ObjectId | string;
   price: number;
   quantity: number;
 };
