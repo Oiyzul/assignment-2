@@ -7,7 +7,7 @@
     "start": "node dist/app.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
-    "deploy": "vercel --prod"
+    "deploy": "npx vercel --prod"
   },
   "keywords": [],
   "author": "",
