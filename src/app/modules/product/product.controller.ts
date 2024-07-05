@@ -10,6 +10,8 @@ const createProduct = async (req: Request, res: Response) => {
     const result = await ProductServices.createProductIntoDB(
       validatedProductData
     );
+    // const { __v, ...rest } = result?._doc;
+    // console.log(rest)
 
     res.status(201).json({
       success: true,
@@ -27,14 +29,21 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getProducts = async (req: Request, res: Response) => {
   try {
-    const searchTerm = req.query?.searchTerm
-    const result = await ProductServices.getAllProductsFromDB(searchTerm);
+    const searchTerm = req.query?.searchTerm;
+    const result = await ProductServices.getAllProductsFromDB(
+      searchTerm as string
+    );
 
-    res.status(200).json({
-      success: true,
-      message: searchTerm ? `Product matching search term ${searchTerm} fetched.`: "Products fetched successfully.",
-      data: result,
-    });
+    result?.data != null
+      ? res.status(200).json({
+          success: result?.success,
+          message: result?.message,
+          data: result.data,
+        })
+      : res.status(500).json({
+          success: result?.success,
+          message: result?.message,
+        });
   } catch (err: any) {
     res.status(500).json({
       success: false,

@@ -7,19 +7,38 @@ const createProductIntoDB = async (product: TProduct) => {
 };
 
 const getAllProductsFromDB = async (searchTerm: string) => {
-  let products: TProduct[] = [];
+  let data,
+    success = true,
+    message;
 
-  
   if (!searchTerm) {
-    products = await Product.find();
+    data = await Product.find();
+    message = "Products fetched successfully.";
+
+    if (!data.length) {
+      success = false;
+      message = "No product found.";
+      data = null;
+    }
   }
 
   if (searchTerm) {
-    products = await Product.find({
+    data = await Product.find({
       name: { $regex: new RegExp(searchTerm, "i") },
     });
+    message = `Product matching search term '${searchTerm}' fetched successfully.`;
+
+    if (!data.length) {
+      success = false;
+      message = "No products found.";
+      data = null;
+    }
   }
-  return products;
+  return {
+    success: success,
+    message: message,
+    data: data,
+  };
 };
 
 const getSpecificProductFromDB = async (productId: string) => {

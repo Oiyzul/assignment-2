@@ -4,6 +4,7 @@ import { TProduct } from "./product.interface";
 const variantSchema = {
   type: { type: String, required: true },
   value: { type: String, required: true },
+  _id: false,
 };
 
 const inventorySchema = {
@@ -19,6 +20,16 @@ const productSchema = new Schema<TProduct>({
   tags: { type: [String], required: true },
   variants: [variantSchema],
   inventory: inventorySchema,
+});
+
+productSchema.set("toJSON", {
+  // Remove _id and __v from response
+  transform: (doc, { _id, __v, ...rest }) => rest,
+});
+
+productSchema.set("toObject", {
+  // Remove _id and __v from response
+  transform: (doc, { _id, __v, ...rest }) => rest,
 });
 
 export const Product = model("Product", productSchema);

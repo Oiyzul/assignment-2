@@ -41,9 +41,11 @@ const createOrderIntoDB = async (order: TOrder) => {
 
     const newOrder = await Order.create(order);
     await Product.findByIdAndUpdate(productId, orderedProuduct);
+
     success = true;
     message = "Order created successfully";
     data = newOrder;
+
     return {
       success: success,
       message: message,
@@ -55,13 +57,15 @@ const createOrderIntoDB = async (order: TOrder) => {
 };
 
 const getAllOrdersFromDB = async (email: string | undefined) => {
-  let success = true, message, data
+  let success = true,
+    message,
+    data;
 
   if (!email) {
     data = await Order.find();
-    message = "Orders fetched successfully."
-    
-    if(!data.length) {
+    message = "Orders fetched successfully.";
+
+    if (!data.length) {
       success = false;
       message = "Order not found.";
       data = null;
@@ -72,9 +76,9 @@ const getAllOrdersFromDB = async (email: string | undefined) => {
     data = await Order.find({
       email: email,
     });
-    message = 'Orders fetched successfully for user email';
+    message = "Orders fetched successfully for user email";
 
-    if(!data.length) {
+    if (!data.length) {
       success = false;
       message = "Order not found.";
       data = null;
